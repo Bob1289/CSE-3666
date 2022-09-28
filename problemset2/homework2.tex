@@ -13,6 +13,7 @@
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{tabularx}
 \usepackage[hidelinks]{hyperref}
 
 \lstdefinelanguage[mips]{Assembler}{%
@@ -194,16 +195,195 @@ test: 	addi	s1,x0,0 #j = 0
 \end{center}
 
 \subsection*{Answer:}
-\subsubsection*{or  s1, s2, s3}
-Instructions: or  s1, s2, s3
-
-\subsubsection*{slli  t1, t2, 16}
-
-
-\subsubsection*{xori  x1, x1, -1}
+\begin{center}
+	\includegraphics[scale=.45]{./images/format.png}
+	\includegraphics[scale=.3]{./images/register_list.png}
+\end{center}
 
 
-\subsubsection*{lw  x2, -100(x3)}
+\subsubsection*{Instruction: or  s1, s2, s3}
+Register numbers: or x9, x18, x19\\
+Type: R-Type\\
+opcode: 0110011\\
+rd: 01001\\
+funct3: 110\\
+rs1: 10010\\
+rs2: 10011\\
+funct7: 0000000\\
+Machine code in bits: 0000 0001 0011 1001 0110 0100 1011 0011\\
+Machine code in hex: 0x013964B3\\
+
+\includegraphics[scale=.25]{images/or1.png}
+
+\begin{center}
+	\begin{tabularx}{1.15\textwidth} { 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X
+		| >{\centering\arraybackslash}X
+		| >{\centering\arraybackslash}X | }
+	   \hline
+	   	funct7 & rs2 & rs1 & funct3 & rd & Opcode \\
+	   \hline
+	   0000000  & 10011  & 10010 & 110 & 01001 &  0110011\\
+	  \hline
+	\end{tabularx}
+\end{center}
+
+
+\subsubsection*{Instruction: slli  t1, t2, 16}
+Register numbers: slli x6,x7,16\\
+Type: I-Type\\
+opcode: 0010011\\
+rd: 00110\\
+funct3: 001\\
+rs1: 00111\\
+shift: 10000\\
+Immediate: 0000000\\
+Machine code in bits: 0000 0001 0000 0011 1001 0011 0001 0011\\
+Machine code in hex: 0x1039313\\
+
+\includegraphics[scale=.35]{./images/slli1.png}
+
+\begin{center}
+	\begin{tabularx}{1.15\textwidth} { 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X
+		| >{\centering\arraybackslash}X | }
+	   \hline
+	   	imm[11:0] & rs1 & funct3 & rd & Opcode \\
+	   \hline
+	   000000010000  & 00111  & 001 & 00110 & 0010011 \\
+	  \hline
+	\end{tabularx}
+\end{center}
+
+
+\hspace{3in}
+
+\subsubsection*{Instruction: xori  x1, x1, -1}
+Register numbers: xori x1,x1,-1\\
+Type: I-Type\\
+opcode: 0010011\\
+rd: 00001\\
+funct3: 100\\
+rs1: 00001\\
+Immediate: 111111111111\\
+Machine code in bits: 1111 1111 1111 0000 1100 0000 1001 0011\\
+Machine code in hex: 0xFFF0C093\\
+
+\includegraphics[scale=.35]{./images/xori1.png}
+
+\begin{center}
+	\begin{tabularx}{1.15\textwidth} { 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X
+		| >{\centering\arraybackslash}X | }
+	   \hline
+	   	imm[11:0] & rs1 & funct3 & rd & Opcode \\
+	   \hline
+	   111111111111  & 00001  & 100 & 00001 & 0010011 \\
+	  \hline
+	\end{tabularx}
+\end{center}
+
+\hspace{3in}
+
+\subsubsection*{Instruction: lw  x2, -100(x3)}
+Register numbers: lw x2, -100(x3)\\
+Type: I-Type\\
+opcode: 0000011\\
+rd: 00010\\
+funct3: 010\\
+rs1: 00011\\
+Immediate: 111110011100\\
+Machine code in bits: 1111 1001 1100 0001 1010 0001 0000 0011\\
+Machine code in hex: 0xF9C1A103\\
+
+\includegraphics[scale=.35]{./images/lw1.png}
+
+\begin{center}
+	\begin{tabularx}{1.15\textwidth} { 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X
+		| >{\centering\arraybackslash}X | }
+	   \hline
+	   	imm[11:0] & rs1 & funct3 & rd & Opcode \\
+	   \hline
+	   111110011100  & 00011  & 010 & 00010 & 0000011 \\
+	  \hline
+	\end{tabularx}
+\end{center}
+
+\hspace{3in}
+
+\section*{Question 4}
+\begin{center}
+	\includegraphics[scale=.572]{./images/Q4Problem.png}
+\end{center}
+
+\subsection*{Answer:}
+\subsubsection*{Machine code: 0xFEACA823}
+
+\includegraphics[scale=.3]{images/swq4.png}
+\\\\
+Code in bits: 1111111 01010 11001 010 10000 0100011\\
+Type: S-Type\\
+Opcode: 0100011 (Type S-Type)\\
+Immediate1: 10000 (Decimal: 16)\\
+funct3: 010 (Instruction sw)\\ 
+rs1: 11001 (Decimal 25)\\
+rs2: 01010 (Decimal 10)\\
+Immediate2: 1111111 (Negative)\\
+Translation: sw x10, -16(x25)\\
+
+\subsubsection*{Machine code: 0x04020713}
+
+\includegraphics[scale=.3]{images/addiq4.png}
+\\\\
+Code in bits: 000001000000 00100 000 01110 0010011\\
+Type: I-Type\\
+Opcode: 0010011 (Type I-Type)\\
+rd: 01110 (Decimal 14)\\
+funct3: 000 (Instruction addi)\\
+rs1: 00100 (Decimal 4)\\
+Immediate: 000001000000 (Decimal 64)\\
+Translation: addi x14, x4, 64\\
+
+\subsubsection*{Machine code: 0x00557BB3}
+
+\includegraphics[scale=.3]{images/andq4.png}
+\\\\
+Code in bits: 0000000 00101 01010 111 10111 0110011\\
+Type: R-Type\\
+Opcode: 0110011 (Type R-Type)\\
+rd: 10111 (Decimal 23)\\
+funct3: 111 (Instruction and)\\
+rs1: 01010 (Decimal 10)\\
+rs2: 00101 (Decimal 5)\\
+funct7: 0000000 (Decimal 0)\\
+Translation: and x23, x10, x5\\
+
+\subsubsection*{Machine code: 0x414FDF13}
+
+\includegraphics[scale=.3]{images/sraiq4.png}
+\\\\
+Code in bits: 010000010100 11111 101 11110 0010011\\
+Type: I-Type\\
+Opcode: 0010011 (Type I-Type)\\
+rd: 11110 (Decimal 30)\\
+funct3: 101 (Instruction srai)\\
+rs1: 11111 (Decimal 31)\\
+shift: 010100 (Decimal 20)\\
+Immediate: 0100000\\
+Translation: srai x30, x31, 20\\
 
 
 \end{document}
