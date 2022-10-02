@@ -141,8 +141,184 @@ for saving registers and once for allocating memory for array c.
 The function should have only one exit. There is only one return instruction.
 Another reminder: callees may change any temporary and argument registers.
 
+\begin{center}
+    \includegraphics[scale=.55]{images/Q2.png}
+\end{center}
+
+\textbf{Answer:}
+\begin{lstlisting}
+# merge inputs in (c[], d1[], n1, d2[], n2)
+# copy inputs in (d[], c[], n)
+
+# Inputs in d[] and int n
+msort:
+	addi	sp,sp,-1036 #allocate space for variables
+	
+	sw	ra,1032(sp)
+	sw	s2,1028(sp)
+	sw	s1,1024(sp) 
+	
+	addi	s1,a0,0 #Save D[] to s1
+	addi	s2,a1,0 #Save n to s2
+	
+	addi	t0,t0,2 # t0 = 2 for if statement
+	blt		a1,t0,exit # return if n < 2
+
+	srai	t1,s2,1 # n1 = n/2
+	addi	a1,t1,0 # a1 = n1
+	jal     ra,msort  # call msort(d,n1)
+	
+	slli	t3,t1,2 #t3 = n1 * 4
+	add     a0,t3,s1 #n1 + &d = &d[n1] = a0
+	sub     a1,s2,t1 #n-n1 = a1
+	jal     ra,msort  # call msort(&d[n1], n - n1)
+	
+	addi    a0,sp,0 #c
+	addi    a1,s1,0 #d
+	addi    a2,t1,0 #n1
+	add     a3,t3,s1 #n1 + &d = &d[n1] = a3
+	sub     a4,s2,t1 #n-n1 = a4
+	jal     ra,merge #merge(c, d, n1, &d[n1], n - n1)
+	
+	addi	a0,s1,0 #d
+	addi	a1,sp,0 #c
+	addi	a2,s2,0 #n
+	jal     ra,copy #copy(d, c, n)
+	
+exit:
+	#restore registers
+	lw      s1,1024(sp) 
+	lw      s2,1028(sp)
+	lw      ra,1032(sp)
+	
+	addi    sp,sp,1036 
+	
+	jr      ra
+\end{lstlisting}
+
 \section*{Question 3}
+Find the machine code for the following instruction. Assume all instructions are labeled
+sequentially, for example, I1, I2, I3, …, I150. 
+
+\begin{center}
+    \includegraphics[scale=.75]{images/Q3.png}
+\end{center}
+
+\subsection*{I10:   BGE x10,x20,I100}
+
+Opcode: 1100011\\
+funct3: 101\\
+Type: SB\\
+rs1: 01010\\
+rs2: 10100\\
+work: (100 - 10) * 4 = 360\\
+immediate: 0000101101000\\
+Machine code: 0001011 10100 01010 101 01000 1100011\\
+Hex: 0x17455463\\
+
+\begin{center}
+	\begin{tabularx}{1.15\textwidth} { 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X 
+		| >{\centering\arraybackslash}X
+        | >{\centering\arraybackslash}X
+		| >{\centering\arraybackslash}X | }
+	   \hline
+	   	im[12][10:5] & rs2 & rs1 & funct3 & im[4:1][11] & Opcode \\
+	   \hline
+	   0001011  & 10100  & 01010 & 101 & 01000 & 1100011 \\
+	  \hline
+	\end{tabularx}
+\end{center}
+
+\subsection*{I11:   BEQ x10,x0,I1}
+
+Opcode: 1100011\\
+funct3: 000\\
+Type: SB\\
+rs1: 01010\\
+rs2: 00000\\
+work: (1 - 11) * 4 = -40\\
+immediate: 1111111011000\\
+Machine code: 1111110 00000 01010 000 11001 1100011\\
+Hex: 0xFC050CE3\\
+
+\begin{center}
+    \begin{tabularx}{1.15\textwidth} { 
+        | >{\centering\arraybackslash}X 
+        | >{\centering\arraybackslash}X 
+        | >{\centering\arraybackslash}X 
+        | >{\centering\arraybackslash}X
+        | >{\centering\arraybackslash}X
+        | >{\centering\arraybackslash}X | }
+       \hline
+       	im[12][10:5] & rs2 & rs1 & funct3 & im[4:1][11] & Opcode \\
+       \hline
+       1111110  & 00000  & 01010 & 000 & 11001 & 1100011 \\
+      \hline
+    \end{tabularx}
+\end{center}
+
+\subsection*{I140:   JAL x0,I100}
+
+Opcode: 1101111\\
+Type: UJ\\
+rd: 00000\\
+work: (100 - 140) * 4 = -160\\
+immediate: 111111111111101100000\\
+Machine code: 11110110000111111111 00000 1101111\\
+Hex: 0xF61FF06F\\
+
+\begin{center}
+    \begin{tabularx}{1.15\textwidth} { 
+        | >{\centering\arraybackslash}X 
+        | >{\centering\arraybackslash}X 
+        | >{\centering\arraybackslash}X | }
+       \hline
+        imm[20][10:1][11][19:12] & rd & Opcode \\
+       \hline
+       11110110000111111111 & 00000 & 1101111 \\
+      \hline
+    \end{tabularx}
+\end{center}
+
+\newpage
 
 \section*{Question 4}
+
+Decode the following instructions in machine code. Find the offset in decimal and then the
+target address in hexadecimal. The hexadecimal number before the colon is the instruction’s
+address.
+
+\begin{center}
+    \includegraphics[scale=.75]{images/Q4.png}
+\end{center}
+
+\subsection*{0x0400366C: 0xDB5A04E3}
+
+Instruction in Binary: 1101101 10101 10100 000 01001 1100011\\
+Opcode: 1100011\\
+funct3: 000\\
+Type: SB\\
+rs1: 10100\\
+rs2: 10101\\
+immediate work: [1][1][101101][0100][0]\\
+immediate: 1110110101000\\
+Decimal: -600\\
+Target address: 0x0400366C - 0x258 = 0x4003414\\
+Instruction: BEQ x20,x21,0x4003414\\
+
+\subsection*{0x04208888: 0xFA9FF0EF}
+
+Instruction in Binary: 11111010100111111111 00001 1101111\\
+Opcode: 1101111\\
+Type: UJ\\
+rd: 00001\\
+immediate work: [1][11111111][1][1111010100][0]\\
+immediate: 111111111111110101000\\
+Decimal: -88\\
+Target address: 0x04208888 - 0x58 = 0x4208830\\
+Instruction: JAL x1,0x4208830\\
 
 \end{document}
